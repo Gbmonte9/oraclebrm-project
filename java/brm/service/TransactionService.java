@@ -40,4 +40,35 @@ public class TransactionService {
         }
         return transactions;
     }
+
+    public boolean deleteAllTransactionsByAccountId(Connection conn, int accountId) throws SQLException {
+        String sql = "DELETE FROM transactions WHERE account_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, accountId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0; 
+        }
+    }
+
+    public boolean deleteTransactionById(Connection conn, int transactionId) throws SQLException {
+        String sql = "DELETE FROM transactions WHERE transaction_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0; 
+        }
+    }
+
+    public boolean updateTransactionById(Connection conn, int transactionId, String newType, double newAmount) throws SQLException {
+        String sql = "UPDATE transactions SET transaction_type = ?, amount = ? WHERE transaction_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newType);
+            pstmt.setDouble(2, newAmount);
+            pstmt.setInt(3, transactionId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0; 
+        }
+    }
+
+
 }

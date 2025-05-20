@@ -31,7 +31,12 @@ public class BillingSystem {
                 System.out.println("1 - Criar Conta");
                 System.out.println("2 - Fazer Transação");
                 System.out.println("3 - Ver Extrato da Conta");
-                System.out.println("4 - Sair");
+                System.out.println("4 - Ver Todas as Contas");
+                System.out.println("5 - Deleta Contas");
+                System.out.println("6 - Deleta Transação");
+                System.out.println("7 - Editar Conta");
+                System.out.println("8 - Editar Transação");
+                System.out.println("9 - Sair");
                 System.out.print("Opção: ");
                 int opcao = scanner.nextInt();
                 scanner.nextLine(); 
@@ -99,8 +104,83 @@ public class BillingSystem {
                         }
 
                         break;
-
+                    
                     case 4:
+                        System.out.println("Ver Todas as Contas");
+                            account = new Account(); 
+                            if (account.allAccounts(conn)) {
+                                System.out.println("Todas as contas exibidas com sucesso.");
+                            } else {
+                                System.out.println("Nenhuma conta encontrada.");
+                            }
+
+                        break;
+
+                    case 5:
+                        System.out.print("Digite o ID da conta: ");
+                            contaId = scanner.nextInt(); 
+                            scanner.nextLine();
+
+                            account = new Account(contaId);
+
+                            if (account.deleteAccount(conn)) {
+                                System.out.println("Conta deletada com sucesso.");
+                            } else {
+                                System.out.println("Conta não encontrada.");
+                            }
+
+                        break;
+
+                    case 6:
+                        System.out.print("Digite o ID da transação: ");
+                        int transactionId = scanner.nextInt();  
+                        scanner.nextLine();
+
+                        transaction = new Transaction(transactionId);  
+
+                        if (transaction.deleteTransaction(conn)) {
+                            System.out.println("Transação deletada com sucesso.");
+                        } else {
+                            System.out.println("Transação não encontrada.");
+                        }
+
+                        break;
+
+                    case 7:
+                        System.out.println("Editar Conta");
+
+                        System.out.print("Digite o ID da conta: ");
+                        contaId = scanner.nextInt();
+                        scanner.nextLine(); 
+
+                        account = new Account(contaId);
+
+                        if (account.updateAccount(conn)) {
+                            System.out.println("Conta atualizada com sucesso.");
+                        } else {
+                            System.out.println("Conta não encontrada ou erro ao atualizar.");
+                        }
+
+                        break;
+
+                    case 8:
+                        System.out.println("Editar Transação");
+
+                        System.out.print("Digite o ID da Transação: ");
+                        transactionId = scanner.nextInt();
+                        scanner.nextLine(); 
+
+                        transaction = new Transaction(transactionId);
+
+                        if (transaction.updateTransaction(conn)) {
+                            System.out.println("Transação atualizada com sucesso.");
+                        } else {
+                            System.out.println("Transação não encontrada ou erro ao atualizar.");
+                        }
+
+                        break;
+
+                    case 9:
                         running = false;
                         System.out.println("Encerrando sistema. Até logo!");
                         break;

@@ -3,6 +3,7 @@ package brm.model;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Scanner;
 
 import brm.service.TransactionService;
 
@@ -23,6 +24,10 @@ public class Transaction {
 
     public int getTransactionId() {
         return transactionId;
+    }
+
+    public Transaction(int transactionId) {
+        this.transactionId = transactionId;
     }
 
     public int getAccountId() {
@@ -77,6 +82,37 @@ public class Transaction {
             } else {
                 e.printStackTrace();
             }
+            return false;
+        }
+    }
+
+    public boolean updateTransaction(Connection conn) {
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("Digite o novo tipo da transação: ");
+            String newType = scanner.nextLine();
+
+            System.out.print("Digite o novo valor da transação: ");
+            double newAmount = scanner.nextDouble();
+            scanner.nextLine(); 
+
+            TransactionService transactionService = new TransactionService();
+            boolean updated = transactionService.updateTransactionById(conn, this.transactionId, newType, newAmount);
+
+            return updated;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteTransaction(Connection conn) {
+        TransactionService service = new TransactionService();
+        try {
+            boolean deleted = service.deleteTransactionById(conn, this.transactionId);
+            return deleted;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
